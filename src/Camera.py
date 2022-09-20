@@ -17,6 +17,8 @@ class Camera:
             Rotate:
                 Left - Q
                 Right - E
+                Up - R
+                Down - F
 
             Zoom:
                 In - X
@@ -28,10 +30,8 @@ class Camera:
         self.mat_lookat = None
 
         self._zoom_step = 1.0
-        self._move_vertically = 1.0
-        self._move_horizontally = 1.0
-        self._rotate_horizontally = 1.0
-        self._rotate_vertically = 1.0
+        self._movement_speed = 1.0
+        self._rotation_speed = 1.0
 
         self._field_of_view_degrees = 45.0
         self._z_near = 0.1
@@ -54,36 +54,48 @@ class Camera:
         self.build_projection()
 
     def move_forward(self):
-        self._camera_position = self._camera_position + self._camera_direction * self._move_horizontally
+        self._camera_position = self._camera_position + self._camera_direction * self._movement_speed
         self.build_look_at()
 
     def move_backwards(self):
-        self._camera_position = self._camera_position - self._camera_direction * self._move_horizontally
+        self._camera_position = self._camera_position - self._camera_direction * self._movement_speed
         self.build_look_at()
 
     def strafe_left(self):
-        self._camera_position = self._camera_position - vector.normalize(self._camera_direction ^ self._camera_up) * self._move_horizontally
+        self._camera_position = self._camera_position - vector.normalize(self._camera_direction ^ self._camera_up) * self._movement_speed
         self.build_look_at()
 
     def strafe_right(self):
-        self._camera_position = self._camera_position + vector.normalize(self._camera_direction ^ self._camera_up) * self._move_horizontally
+        self._camera_position = self._camera_position + vector.normalize(self._camera_direction ^ self._camera_up) * self._movement_speed
         self.build_look_at()
 
     def strafe_up(self):
-        self._camera_position = self._camera_position + self._camera_up * self._move_vertically
+        self._camera_position = self._camera_position + self._camera_up * self._movement_speed
         self.build_look_at()
 
     def strafe_down(self):
-        self._camera_position = self._camera_position - self._camera_up * self._move_vertically
+        self._camera_position = self._camera_position - self._camera_up * self._movement_speed
         self.build_look_at()
 
-    def rotate_left(self):
-        rotation = Quaternion.from_y_rotation(2 * float(self._rotate_horizontally) * np.pi / 180)
+    def yaw_left(self):
+        rotation = Quaternion.from_y_rotation(2 * float(self._rotation_speed) * np.pi / 180)
         self._camera_direction = rotation * self._camera_direction
         self.build_look_at()
 
-    def rotate_right(self):
-        rotation = Quaternion.from_y_rotation(-2 * float(self._rotate_horizontally) * np.pi / 180)
+    def yaw_right(self):
+        rotation = Quaternion.from_y_rotation(-2 * float(self._rotation_speed) * np.pi / 180)
+        self._camera_direction = rotation * self._camera_direction
+        self.build_look_at()
+
+    def pitch_up(self):
+        rotation = Quaternion.from_axis_rotation(np.cross(self._camera_up, self._camera_direction),
+                                                 -2 * float(self._rotation_speed) * np.pi / 180)
+        self._camera_direction = rotation * self._camera_direction
+        self.build_look_at()
+
+    def pitch_down(self):
+        rotation = Quaternion.from_axis_rotation(np.cross(self._camera_up, self._camera_direction),
+                                                 2 * float(self._rotation_speed) * np.pi / 180)
         self._camera_direction = rotation * self._camera_direction
         self.build_look_at()
 

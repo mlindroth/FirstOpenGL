@@ -106,6 +106,8 @@ class PerspectiveProjection(mglw.WindowConfig):
             self.wnd.keys.D: False,     # strafe right
             self.wnd.keys.Q: False,     # rotate left
             self.wnd.keys.E: False,     # rotare right
+            self.wnd.keys.R: False,     # rotate up
+            self.wnd.keys.F: False,     # rotare down
             self.wnd.keys.Z: False,     # zoom in
             self.wnd.keys.X: False,     # zoom out
         }
@@ -130,10 +132,16 @@ class PerspectiveProjection(mglw.WindowConfig):
             self.camera.strafe_right()
 
         if self.states.get(self.wnd.keys.Q):
-            self.camera.rotate_left()
+            self.camera.yaw_left()
 
         if self.states.get(self.wnd.keys.E):
-            self.camera.rotate_right()
+            self.camera.yaw_right()
+
+        if self.states.get(self.wnd.keys.R):
+            self.camera.pitch_up()
+
+        if self.states.get(self.wnd.keys.F):
+            self.camera.pitch_down()
 
         if self.states.get(self.wnd.keys.Z):
             self.camera.zoom_in()
