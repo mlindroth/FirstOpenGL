@@ -29,7 +29,7 @@ for r in range(rows):
 class FirstOpenGL(mglw.WindowConfig):
     gl_version = (3, 3)
     title = "FirstOpenGL Project"
-    window_size = (1280, 720)
+    window_size = (1920, 1080)
     aspect_ratio = 16 / 9
     resizable = True
 
@@ -163,6 +163,7 @@ class FirstOpenGL(mglw.WindowConfig):
 
     def render(self, time, frame_time):
         self.move_camera()
+        self.light.value = tuple(self.camera._camera_position)
 
         self.ctx.clear(1.0, 1.0, 1.0)
         self.ctx.enable(mgl.DEPTH_TEST)
