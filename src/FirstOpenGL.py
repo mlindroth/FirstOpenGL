@@ -14,17 +14,19 @@ def random_color():
     return hls(uniform(0.0, 1.0), 0.5, 0.5)
 
 
+# creation of car meta-data
 cars = []
-cars += [{'color': random_color(),
-          'pos': (i * 2.0 - 9.0, 0.0, 1.5),
-          'angle': uniform(-0.5, 0.5)} for i in range(10)]
+rows = 100
+width = 100
+spacing = 2
 
-cars += [{'color': random_color(),
-          'pos': (i * 2.0 - 9.0, 0.0, -1.5),
-          'angle': uniform(-0.5, 0.5)} for i in range(10)]
+for r in range(rows):
+    cars += [{'color': random_color(),
+              'pos': ((spacing*width)/2-(spacing*i), 0.0, (spacing*rows)/2-(spacing*r)),
+              'angle': uniform(-0.5, 0.5)} for i in range(width)]
 
 
-class PerspectiveProjection(mglw.WindowConfig):
+class FirstOpenGL(mglw.WindowConfig):
     gl_version = (3, 3)
     title = "FirstOpenGL Project"
     window_size = (1280, 720)
@@ -98,38 +100,38 @@ class PerspectiveProjection(mglw.WindowConfig):
         self.vao = vao_wrapper.instance(self.prog)
 
         self.states = {
-            self.wnd.keys.W: False,     # forward
-            self.wnd.keys.S: False,     # backwards
-            self.wnd.keys.UP: False,    # strafe Up
-            self.wnd.keys.DOWN: False,  # strafe Down
-            self.wnd.keys.A: False,     # strafe left
-            self.wnd.keys.D: False,     # strafe right
-            self.wnd.keys.Q: False,     # rotate left
-            self.wnd.keys.E: False,     # rotare right
-            self.wnd.keys.R: False,     # rotate up
-            self.wnd.keys.F: False,     # rotare down
+            self.wnd.keys.W: False,     # translate forward
+            self.wnd.keys.S: False,     # translate backwards
+            self.wnd.keys.UP: False,    # translate Up
+            self.wnd.keys.DOWN: False,  # translate Down
+            self.wnd.keys.A: False,     # translate left
+            self.wnd.keys.D: False,     # translate right
+            self.wnd.keys.Q: False,     # yaw left
+            self.wnd.keys.E: False,     # yaw right
+            self.wnd.keys.R: False,     # pitch up
+            self.wnd.keys.F: False,     # pitch down
             self.wnd.keys.Z: False,     # zoom in
             self.wnd.keys.X: False,     # zoom out
         }
 
     def move_camera(self):
         if self.states.get(self.wnd.keys.W):
-            self.camera.move_forward()
+            self.camera.translate_forward()
 
         if self.states.get(self.wnd.keys.S):
-            self.camera.move_backwards()
+            self.camera.translate_backwards()
 
         if self.states.get(self.wnd.keys.UP):
-            self.camera.strafe_up()
+            self.camera.translate_up()
 
         if self.states.get(self.wnd.keys.DOWN):
-            self.camera.strafe_down()
+            self.camera.translate_down()
 
         if self.states.get(self.wnd.keys.A):
-            self.camera.strafe_left()
+            self.camera.translate_left()
 
         if self.states.get(self.wnd.keys.D):
-            self.camera.strafe_right()
+            self.camera.translate_right()
 
         if self.states.get(self.wnd.keys.Q):
             self.camera.yaw_left()
@@ -181,4 +183,4 @@ class PerspectiveProjection(mglw.WindowConfig):
 
 
 if __name__ == '__main__':
-    PerspectiveProjection.run()
+    FirstOpenGL.run()

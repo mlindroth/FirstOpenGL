@@ -1,20 +1,19 @@
 from pyrr import Matrix44, Quaternion, Vector3, vector
 import numpy as np
 
+
 class Camera:
     """
         Controls:
-            Move:
+            Translate:
                 Forward - W
                 Backwards - S
-
-            Strafe:
                 Up - up arrow
                 Down - down arrow
                 Left - A
                 Right - D
 
-            Rotate:
+            Pitch/Yaw:
                 Left - Q
                 Right - E
                 Up - R
@@ -30,7 +29,7 @@ class Camera:
         self.mat_lookat = None
 
         self._zoom_step = 1.0
-        self._movement_speed = 1.0
+        self._movement_speed = 0.5
         self._rotation_speed = 1.0
 
         self._field_of_view_degrees = 45.0
@@ -53,27 +52,27 @@ class Camera:
         self._field_of_view_degrees = self._field_of_view_degrees + self._zoom_step
         self.build_projection()
 
-    def move_forward(self):
+    def translate_forward(self):
         self._camera_position = self._camera_position + self._camera_direction * self._movement_speed
         self.build_look_at()
 
-    def move_backwards(self):
+    def translate_backwards(self):
         self._camera_position = self._camera_position - self._camera_direction * self._movement_speed
         self.build_look_at()
 
-    def strafe_left(self):
+    def translate_left(self):
         self._camera_position = self._camera_position - vector.normalize(self._camera_direction ^ self._camera_up) * self._movement_speed
         self.build_look_at()
 
-    def strafe_right(self):
+    def translate_right(self):
         self._camera_position = self._camera_position + vector.normalize(self._camera_direction ^ self._camera_up) * self._movement_speed
         self.build_look_at()
 
-    def strafe_up(self):
+    def translate_up(self):
         self._camera_position = self._camera_position + self._camera_up * self._movement_speed
         self.build_look_at()
 
-    def strafe_down(self):
+    def translate_down(self):
         self._camera_position = self._camera_position - self._camera_up * self._movement_speed
         self.build_look_at()
 
