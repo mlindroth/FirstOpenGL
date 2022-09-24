@@ -21,7 +21,7 @@ void main() {
     v_vert = in_origin + in_basis * in_position;
     v_norm = in_basis * in_normal;
     v_color = in_color;
-	gl_Position = m_proj * m_cam * m_model * vec4(in_position, 1.0);
+	gl_Position = m_proj * m_cam * m_model * vec4(v_vert, 1.0);
 }
 
 #elif defined FRAGMENT_SHADER
