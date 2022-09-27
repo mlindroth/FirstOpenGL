@@ -47,7 +47,7 @@ class GraphicsEngine(CameraWindow):
 
         obj = self.load_scene('models/lowpoly_toy_car.obj')
 
-        self.prog['m_model'].write(Matrix44.from_translation([0.0, 0.0, -8.0], dtype='f4'))
+        self.prog['m_model'].write(Matrix44.from_translation([0.0, 0.0, 0], dtype='f4'))
 
         self.vbo = self.ctx.buffer(struct.pack(
             '15f',
